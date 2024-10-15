@@ -35,6 +35,16 @@ body {
   padding: 10px;
   border: 2px solid #422aad;
 }
+.content .fixed-link {
+  display: inline-block; /* or display: block; if you want them to take up the full available width */
+  width: 60px; /* Adjust as needed */
+  height: 20px; /* Adjust as needed */
+  text-align: center; /* Center text horizontally */
+  line-height: 20px; /* Vertically center text (must match height) */
+  text-decoration: none; /* Remove default underline */
+  border: 1px solid #ccc; /* Optional: Add a border */
+  margin: 5px; /* Optional: Add some margin between links */
+}
 .content a {
   display: inline-block;
   padding: 8px 16px;
@@ -54,18 +64,23 @@ body {
   border: solid 1px;
   border-radius: 5px;
 }
+.content input[type=text] {
+  /* Selects only text input fields */
+  padding: 10px;
+  margin: 5px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  width: 300px; /* Adjust this value as needed to accommodate at least 60 characters */
+  min-width: 300px; /* Ensures the width is at least 300px */
+}
 .content #btn_add {
-  background-color: #008000;
+  background-color: #275f27;
   color: #fff;
   cursor: pointer;
+  font-size: 18px; /* Increase font size */
+  font-weight: bold; /* Make text bold */
+  padding: 10px 20px; /* Add padding for a larger button */
 }
-.content .fixed-link {
-  display: inline-block; /* or display: block; if you want them to take up the full available width */
-  width: 60px; /* Adjust as needed */
-  height: 20px; /* Adjust as needed */
-  text-align: center; /* Center text horizontally */
-  line-height: 20px; /* Vertically center text (must match height) */
-  text-decoration: none; /* Remove default underline */
-  border: 1px solid #ccc; /* Optional: Add a border */
-  margin: 5px; /* Optional: Add some margin between links */
+.content #btn_add:hover {
+  background-color: #995050;
 }/*# sourceMappingURL=styles.css.map */

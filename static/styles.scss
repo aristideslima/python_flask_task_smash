@@ -34,5 +34,54 @@ body {
   table {
     width: 100%;
     margin-top: 20px;
+    border-collapse: collapse;
+
+    td {
+      padding: 10px;
+      border: 2px solid #422aad;
+    }
+    th {
+      background-color: #7cc6cf;
+      color: #975454;
+      padding: 10px;
+      border: 2px solid #422aad;
+    }
+  }
+  a {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 5px;
+    border-radius: 20px;
+    background-color: $primary_color;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s case;
+
+    &:hover {
+      background-color: $primary-hover-color;
+    }
+  }
+  input {
+    padding: 10px;
+    margin: 5px;
+    border: solid 1px;
+    border-radius: 5px;
+  }
+
+  #btn_add {
+    background-color: $success-color;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .fixed-link {
+    display: inline-block; /* or display: block; if you want them to take up the full available width */
+    width: 60px; /* Adjust as needed */
+    height: 20px; /* Adjust as needed */
+    text-align: center; /* Center text horizontally */
+    line-height: 20px; /* Vertically center text (must match height) */
+    text-decoration: none; /* Remove default underline */
+    border: 1px solid #ccc; /* Optional: Add a border */
+    margin: 5px; /* Optional: Add some margin between links */
   }
 }

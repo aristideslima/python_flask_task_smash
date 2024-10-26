@@ -41,10 +41,10 @@ with app.app_context():
 verifica_contexto()  # Contexto não ativo fora do bloco
 
 class MyTask(db.Model):
-    id = db.Column(db.Integer,primary_key=True)
-    content = db.Column(db.String(100),nullable=False)
-    complete = db.Column(db.Integer, default=0)
-    created = db.Column(db.DateTime,default=datetime.utcnow)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    content: Mapped[str] = mapped_column(db.String(100),nullable=False)
+    complete: Mapped[int] = mapped_column(default=0)
+    created: Mapped[datetime] = mapped_column(db.DateTime, default=datetime.utcnow)  
 
     def __repr__(self) -> str:
         return  f"task {self.id}"

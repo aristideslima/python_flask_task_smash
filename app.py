@@ -1,11 +1,13 @@
-# Imports
+# Aplicação Demonstração de Flask com Uso do SQLAlchemy usando SQLLITE
+# Esse código sofrerá uma mudança para uso do MariaDB Mysql
+# Portanto vamos salvar esse código aqui para uso posterior
 
+# Imports
 import logging, os, pytz, datetime
 from flask import Flask, render_template, redirect, request, current_app, has_app_context
 from flask_scss import Scss
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-#from datetime import datetime
 
 # Configuração do Logging
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -45,7 +47,6 @@ class MyTask(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     content: Mapped[str] = mapped_column(db.String(100),nullable=False)
     complete: Mapped[int] = mapped_column(default=0)
-    #created: Mapped[datetime] = mapped_column(db.DateTime, default=datetime.utcnow)
     created: Mapped[datetime.datetime] = mapped_column(db.DateTime, default=datetime.datetime.now(tz=rec_timezone))
 
     def __repr__(self) -> str:
@@ -70,7 +71,6 @@ def create_database():
             exit(1)  # Encerra o programa com código de erro
 
 create_database() # Chamada Crucial para criar o banco de dados
-
 
 # Routes do webpages
 # Home Page

@@ -1,12 +1,11 @@
 # Imports
 
-import logging
-import os
+import logging, os, pytz, datetime
 from flask import Flask, render_template, redirect, request, current_app, has_app_context
 from flask_scss import Scss
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from datetime import datetime
+#from datetime import datetime
 
 # Configuração do Logging
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -20,8 +19,10 @@ instance_path = os.path.join(app.root_path, 'instance')
 if not os.path.exists(instance_path):
     os.makedirs(instance_path)
 
-# Flask-SQLAlchemy
+# Criando a estrutura de TimeZone de Recife
+rec_timezone = pytz.timezone('America/Recife')
 
+# Flask-SQLAlchemy
 # configure the SQLite database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATION"] = False
@@ -44,7 +45,8 @@ class MyTask(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     content: Mapped[str] = mapped_column(db.String(100),nullable=False)
     complete: Mapped[int] = mapped_column(default=0)
-    created: Mapped[datetime] = mapped_column(db.DateTime, default=datetime.utcnow)  
+    #created: Mapped[datetime] = mapped_column(db.DateTime, default=datetime.utcnow)
+    created: Mapped[datetime.datetime] = mapped_column(db.DateTime, default=datetime.datetime.now(tz=rec_timezone))
 
     def __repr__(self) -> str:
         return  f"task {self.id}"

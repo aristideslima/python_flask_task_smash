@@ -7,12 +7,16 @@ license = "Free"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.12, <=3.13"
 flask = "^3.0.3"
 flask-scss = "^0.5"
 flask-sqlalchemy = "^3.1.1"
 pytz = "^2024.2"
 datetime = "^5.5"
+python-dotenv = "^1.0.1"
+flask-migrate = "^4.0.7"
+pymysql = "^1.1.1"
+sqlalchemy = "^2.0.36"
 
 
 [build-system]

@@ -1,5 +1,4 @@
-# Aplicação Flask com SQLAlchemy para uso com um banco de dados já existente
-# Essa versão da APP não cria Banco de de Dados
+# Aplicação Flask com SQLAlchemy independente de banco de dados
 
 import logging
 import os
@@ -17,29 +16,74 @@ load_dotenv()
 # Configuração do Logging
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Configuração do Flask
+# My App –– IMPORTANTE: instance_relative_config=True
 app = Flask(__name__, instance_relative_config=True)
 Scss(app)
+
+# Configurar caminho absoluto para o diretório 'instance' e o banco de dados
+instance_path = os.path.join(app.root_path, 'instance')
+database_path = os.path.join(instance_path, 'database.db')  # Caminho absoluto para o banco de dados
+
+# Verificação e criação do diretório 'instance' se necessário, com verificação de permissões
+if not os.path.exists(instance_path):
+    try:
+        os.makedirs(instance_path)
+        print(f"Diretório 'instance' criado em {instance_path}")
+    except OSError as e:
+        print(f"Erro ao criar o diretório 'instance': {e}")
+        exit(1)  # Encerra o aplicativo se o diretório não puder ser criado
+
+# Verificar permissões do diretório 'instance'
+if not os.access(instance_path, os.W_OK | os.R_OK):
+    print(f"Erro: Sem permissão de leitura/escrita para o diretório {instance_path}")
+    exit(1)
 
 # Configuração do fuso horário para Recife
 rec_timezone = pytz.timezone('America/Recife')
 
-# Configuração do URI do banco de dados
+# Configuração do URI do banco de dados usando o caminho absoluto
 DATABASE_URI = os.getenv("DATABASE_URI")
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Inicializa o banco de dados
 db = SQLAlchemy(app)
 
-# Modelo da tabela MyTask para gerenciamento de tarefas
+def verifica_contexto():
+    if has_app_context():
+        print(f"Contexto do aplicativo ativo: {current_app.name}")
+    else:
+        print("Contexto do aplicativo não ativo.")
+
+# Executa a verificação de contexto
+with app.app_context():
+    verifica_contexto()
+
+verifica_contexto()  # Contexto não ativo fora do bloco
+
 class MyTask(db.Model):
     __tablename__ = 'my_task'
     id: Mapped[int] = mapped_column(primary_key=True)
     content: Mapped[str] = mapped_column(db.String(100), nullable=False)
     complete: Mapped[int] = mapped_column(default=0)
-    created: Mapped[datetime.datetime] = mapped_column(db.DateTime, default=lambda: datetime.datetime.now(tz=rec_timezone))
+    created: Mapped[datetime.datetime] = mapped_column(db.DateTime, default=datetime.datetime.now(tz=rec_timezone))
 
     def __repr__(self) -> str:
         return f"task {self.id}"
+
+def create_database():
+    with app.app_context():
+        try:
+            db.create_all()
+            print("Banco de dados criado com sucesso ou já existente.")
+        except Exception as e:
+            print(f"Erro ao criar o banco de dados: {e}")
+            exit(1)
+
+# Verifica se o banco de dados SQLite precisa ser criado
+if "sqlite" in DATABASE_URI and not os.path.exists(database_path):
+    print("Banco de dados não encontrado. Criando o banco de dados SQLite.")
+    create_database()
 
 # Rotas do aplicativo
 
